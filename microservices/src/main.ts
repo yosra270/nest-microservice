@@ -6,14 +6,9 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.KAFKA,
+      transport: Transport.REDIS,
       options: {
-        client: {
-          brokers: ['host.docker.internal:9094'],
-        },
-        consumer: {
-          groupId: `microservices-${Math.floor(Math.random() * 100)}`,
-        },
+        url: 'redis://localhost:6379',
       },
     },
   );

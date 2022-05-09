@@ -1,12 +1,21 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServicesController } from './services/services.controller';
 
 @Module({
-  imports: [ConfigModule.forRoot(), EventEmitterModule.forRoot()],
+  imports: [
+    ClientsModule.register([
+      {
+        name: 'customer-microservice',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+    ]),
+  ],
   controllers: [AppController, ServicesController],
   providers: [AppService],
 })
